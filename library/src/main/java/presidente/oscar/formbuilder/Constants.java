@@ -7,10 +7,10 @@ import java.util.HashMap;
  */
 
 public class Constants {
-    public static final String TYPE_TEXT_INPUT = "TextInput";
-    public static final String TYPE_TEXT_AREA = "TextArea";
-    public static final String TYPE_RADIO_GROUP = "RadioGroup";
-    public static final String TYPE_CHECK_BOX = "Checkbox";
+    public static final String TYPE_TEXT_INPUT = "input";
+    public static final String TYPE_TEXT_AREA = "textarea";
+    public static final String TYPE_RADIO_GROUP = "multipleChoices";
+    public static final String TYPE_CHECK_BOX = "checkboxes";
     public static final String TYPE_MATRIX = "matrix";
 
     public final static HashMap<String, Integer> SUPPORTED_WIDGETS;

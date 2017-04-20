@@ -62,7 +62,6 @@ public class DynamicFormView extends LinearLayout {
 
                 if (inflatedView != null)
                     this.addView(inflatedView);
-
             } catch (JSONException e) {
                 Util.logError(TAG, e.getMessage());
             }
