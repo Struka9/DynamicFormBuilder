@@ -60,10 +60,9 @@ public class ViewInflater {
             }
 
             if (v != null) {
+                v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 v.setTag(config);
             }
-
-            v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             return v;
 
         } catch (JSONException e) {
