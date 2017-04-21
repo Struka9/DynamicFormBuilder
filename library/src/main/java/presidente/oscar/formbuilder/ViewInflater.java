@@ -1,16 +1,26 @@
 package presidente.oscar.formbuilder;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import android.support.design.widget.TextInputLayout;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TimePicker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by oscarr on 4/7/17.
@@ -56,7 +66,10 @@ public class ViewInflater {
 
             View v = null;
             if (type.compareTo(Constants.TYPE_TEXT_INPUT) == 0) {
-                v = inflateTextInput(jsonObject, parent);
+                v = inflateTextArea(jsonObject, parent);
+
+                ((TextInputLayout)v).getEditText().setMaxLines(1);
+
             } else if (type.compareTo(Constants.TYPE_TEXT_AREA) == 0) {
                 v = inflateTextArea(jsonObject, parent);
             } else if (type.compareTo(Constants.TYPE_RADIO_GROUP) == 0) {
@@ -74,39 +87,104 @@ public class ViewInflater {
         }
     }
 
-    private EditText inflateTextArea(JSONObject jsonObject, ViewGroup parent) throws JSONException {
-        EditText textInput = (EditText) mLayoutInflater.inflate(R.layout.layout_textarea, parent, false);
+    private View inflateTextArea(JSONObject jsonObject, final ViewGroup parent) throws JSONException {
+        TextInputLayout textInputLayout = (TextInputLayout) mLayoutInflater.inflate(R.layout.layout_textarea, parent, false);
 
+        final EditText textInput = textInputLayout.getEditText();
+
+        String title = null;
         if (jsonObject.has(Constants.VIEW_PROPS)) {
             JSONObject props = jsonObject.getJSONObject(Constants.VIEW_PROPS);
             if (props.has(Constants.VIEW_PROPS_TITLE)) {
-                textInput.setHint(props.getString(Constants.VIEW_PROPS_TITLE));
+                title = props.getString(Constants.VIEW_PROPS_TITLE);
+                textInput.setHint(title);
             }
         }
 
         if (jsonObject.has(Constants.VIEW_CONFIG)) {
             JSONObject config = jsonObject.getJSONObject(Constants.VIEW_CONFIG);
-        }
 
-        return textInput;
-    }
+            if (config.has(Constants.VIEW_CONFIG_TEXTINPUT_TYPE)) {
+                String type = config.getString(Constants.VIEW_CONFIG_TEXTINPUT_TYPE);
 
-    private EditText inflateTextInput(JSONObject jsonObject, ViewGroup parent) throws JSONException {
-        EditText textInput = (EditText) mLayoutInflater.inflate(R.layout.layout_textinput, parent, false);
+                if (type.compareTo(Constants.INPUT_TYPE_TEXT) == 0) {
+                    textInput.setInputType(InputType.TYPE_CLASS_TEXT);
+                } else if (type.compareTo(Constants.INPUT_TYPE_NUMBER) == 0) {
+                    textInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                } else if (type.compareTo(Constants.INPUT_TYPE_PHONE) == 0) {
+                    textInput.setInputType(InputType.TYPE_CLASS_PHONE);
+                } else if (type.compareTo(Constants.INPUT_TYPE_DATETIME) == 0) {
+                    textInput.setFocusable(false);
+                    final String finalTitle = title;
+                    textInput.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String timeSet = textInput.getText().toString();
 
+                            Calendar calendar = Calendar.getInstance();
 
-        if (jsonObject.has(Constants.VIEW_PROPS)) {
-            JSONObject props = jsonObject.getJSONObject(Constants.VIEW_PROPS);
-            if (props.has(Constants.VIEW_PROPS_TITLE)) {
-                textInput.setHint(props.getString(Constants.VIEW_PROPS_TITLE));
+                            if (!timeSet.isEmpty()) {
+                                try {
+                                    Date date = Util.parseTime(timeSet);
+                                    calendar.setTime(date);
+                                } catch (ParseException e) {
+                                    Util.logError(TAG, e.getMessage());
+                                }
+                            }
+
+                            TimePickerDialog dialog = new TimePickerDialog(parent.getContext(),
+                                    new TimePickerDialog.OnTimeSetListener() {
+                                        @Override
+                                        public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                            Calendar c = Calendar.getInstance();
+                                            c.set(Calendar.HOUR_OF_DAY, hour);
+                                            c.set(Calendar.MINUTE, minute);
+
+                                            textInput.setText(Util.formatTime(c.getTime()));
+                                        }
+                                    }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
+
+                            dialog.show();
+                        }
+                    });
+                } else if (type.compareTo(Constants.INPUT_TYPE_DATE) == 0) {
+                    textInput.setFocusable(false);
+                    textInput.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String dateSet = textInput.getText().toString();
+
+                            Calendar calendar = Calendar.getInstance();
+
+                            if (!dateSet.isEmpty()) {
+                                try {
+                                    Date date = Util.parseDate(dateSet);
+                                    calendar.setTime(date);
+                                } catch (ParseException e) {
+                                    Util.log(TAG, e.getMessage());
+                                }
+                            }
+
+                            DatePickerDialog dialog = new DatePickerDialog(parent.getContext(), new DatePickerDialog.OnDateSetListener() {
+                                @Override
+                                public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                    Calendar c = Calendar.getInstance();
+                                    c.set(Calendar.YEAR, year);
+                                    c.set(Calendar.MONTH, month);
+                                    c.set(Calendar.DAY_OF_MONTH, day);
+
+                                    textInput.setText(Util.formatDate(c.getTime()));
+                                }
+                            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+                            dialog.show();
+                        }
+                    });
+                }
             }
         }
 
-        if (jsonObject.has(Constants.VIEW_CONFIG)) {
-            JSONObject config = jsonObject.getJSONObject(Constants.VIEW_CONFIG);
-        }
-
-        return textInput;
+        return textInputLayout;
     }
 
     private RadioGroup inflateRadioGroup(JSONObject jsonObject, ViewGroup parent) throws JSONException {

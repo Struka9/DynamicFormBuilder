@@ -17,6 +17,7 @@ public class Constants {
     public static final String VIEW_NAME = "name";
     public static final String VIEW_RADIO_OPTIONS = "options";
     public static final String VIEW_RADIO_OPTIONS_NAME = "value";
+    public static final String VIEW_CONFIG_TEXTINPUT_TYPE = "type";
 
     static {
         SUPPORTED_WIDGETS = new HashMap<>();
@@ -30,9 +31,15 @@ public class Constants {
     public static final String VIEW_TYPE = "type";
 
     public static final String VIEW_CONFIG = "config";
+
     public static final String VIEW_PROPS = "props";
     public static final String VIEW_PROPS_TITLE = "title";
-
     // The keys to use in the JSON sent back to the server
     public static final String JSON_VALUE = "value";
+
+    public static final String INPUT_TYPE_TEXT = "text";
+    public static final String INPUT_TYPE_NUMBER = "number";
+    public static final String INPUT_TYPE_PHONE = "phone";
+    public static final String INPUT_TYPE_DATE = "date";
+    public static final String INPUT_TYPE_DATETIME = "date";
 }
