@@ -15,6 +15,9 @@ public class Constants {
 
     public final static HashMap<String, Integer> SUPPORTED_WIDGETS;
     public static final String VIEW_NAME = "name";
+    public static final String VIEW_RADIO_OPTIONS = "options";
+    public static final String VIEW_RADIO_OPTIONS_NAME = "value";
+
     static {
         SUPPORTED_WIDGETS = new HashMap<>();
         SUPPORTED_WIDGETS.put(TYPE_TEXT_INPUT, R.layout.layout_textinput);

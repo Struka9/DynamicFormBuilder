@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,10 +59,11 @@ public class ViewInflater {
                 v = inflateTextInput(jsonObject, parent);
             } else if (type.compareTo(Constants.TYPE_TEXT_AREA) == 0) {
                 v = inflateTextArea(jsonObject, parent);
+            } else if (type.compareTo(Constants.TYPE_RADIO_GROUP) == 0) {
+                v = inflateRadioGroup(jsonObject, parent);
             }
 
             if (v != null) {
-                v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 v.setTag(config);
             }
             return v;
@@ -104,6 +107,34 @@ public class ViewInflater {
         }
 
         return textInput;
+    }
+
+    private RadioGroup inflateRadioGroup(JSONObject jsonObject, ViewGroup parent) throws JSONException {
+        RadioGroup radioGroup = (RadioGroup) mLayoutInflater.inflate(R.layout.layout_radiougroup, parent, false);
+
+        if (jsonObject.has(Constants.VIEW_PROPS)) {
+            JSONObject props = jsonObject.getJSONObject(Constants.VIEW_PROPS);
+
+            if (props.has(Constants.VIEW_PROPS_TITLE)) {
+                String title = props.getString(Constants.VIEW_PROPS_TITLE);
+
+                // TODO: Add the title to the radio group
+            }
+        }
+
+        if (jsonObject.has(Constants.VIEW_RADIO_OPTIONS)) {
+            JSONArray optionsArray = jsonObject.getJSONArray(Constants.VIEW_RADIO_OPTIONS);
+
+            for (int i = 0; i < optionsArray.length(); i++) {
+                JSONObject jsonOption = optionsArray.getJSONObject(i);
+
+                RadioButton option = (RadioButton) mLayoutInflater.inflate(R.layout.layout_radioubutton, radioGroup, true);
+                if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_NAME))
+                    option.setText(jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_NAME));
+            }
+        }
+
+        return radioGroup;
     }
 
     public class ViewConfig {
