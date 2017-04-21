@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -19,15 +18,7 @@ import org.json.JSONObject;
 public class DynamicFormView extends LinearLayout {
     private static final String TAG = DynamicFormView.class.getSimpleName();
 
-    private OnSubmitClickListener mOnSubmitClickListener;
     private LinearLayout mContentLayout;
-    private Button mSubmitBt;
-    private OnClickListener mOnSubmitClickedListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (mOnSubmitClickListener != null) mOnSubmitClickListener.onSubmit(buildJson());
-        }
-    };
 
     private ViewInflater mViewInflater;
 
@@ -49,8 +40,6 @@ public class DynamicFormView extends LinearLayout {
 
         // Get the reference to the content view and submission button
         mContentLayout = (LinearLayout) root.findViewById(R.id.content);
-        mSubmitBt = (Button) root.findViewById(R.id.submit_bt);
-        mSubmitBt.setOnClickListener(mOnSubmitClickedListener);
         mViewInflater = ViewInflater.getInstance(context);
     }
 
