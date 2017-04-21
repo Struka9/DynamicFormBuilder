@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import org.json.JSONArray;
@@ -15,12 +16,13 @@ import org.json.JSONObject;
  * Created by oscarr on 4/7/17.
  */
 
-public class DynamicFormView extends LinearLayout {
+public class DynamicFormView extends FrameLayout {
     private static final String TAG = DynamicFormView.class.getSimpleName();
 
     private LinearLayout mContentLayout;
-
     private ViewInflater mViewInflater;
+
+    private LinearLayout mRootLayout;
 
     public DynamicFormView(Context context) {
         this(context, null);
@@ -38,6 +40,8 @@ public class DynamicFormView extends LinearLayout {
         // Inflate the root view and add it to this
         View root = layoutInflater.inflate(R.layout.layout_dynamic_form, this, true);
 
+        mRootLayout = (LinearLayout) findViewById(R.id.content);
+
         // Get the reference to the content view and submission button
         mContentLayout = (LinearLayout) root.findViewById(R.id.content);
         mViewInflater = ViewInflater.getInstance(context);
@@ -50,7 +54,7 @@ public class DynamicFormView extends LinearLayout {
                 View inflatedView = mViewInflater.inflateFromJson(item, this);
 
                 if (inflatedView != null)
-                    this.addView(inflatedView);
+                    mRootLayout.addView(inflatedView);
             } catch (JSONException e) {
                 Util.logError(TAG, e.getMessage());
             }
