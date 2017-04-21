@@ -128,9 +128,11 @@ public class ViewInflater {
             for (int i = 0; i < optionsArray.length(); i++) {
                 JSONObject jsonOption = optionsArray.getJSONObject(i);
 
-                RadioButton option = (RadioButton) mLayoutInflater.inflate(R.layout.layout_radioubutton, radioGroup, true);
+                RadioButton option = (RadioButton) mLayoutInflater.inflate(R.layout.layout_radioubutton, radioGroup, false);
                 if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_NAME))
                     option.setText(jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_NAME));
+
+                radioGroup.addView(option);
             }
         }
 
