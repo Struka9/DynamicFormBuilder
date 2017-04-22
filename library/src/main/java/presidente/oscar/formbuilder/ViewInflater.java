@@ -35,7 +35,6 @@ public class ViewInflater {
         if (mInstance == null) {
             mInstance = new ViewInflater(context);
         }
-
         return mInstance;
     }
 
