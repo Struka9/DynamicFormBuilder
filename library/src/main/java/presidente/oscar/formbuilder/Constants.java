@@ -21,7 +21,6 @@ public class Constants {
 
     static {
         SUPPORTED_WIDGETS = new HashMap<>();
-        SUPPORTED_WIDGETS.put(TYPE_TEXT_INPUT, R.layout.layout_textinput);
         SUPPORTED_WIDGETS.put(TYPE_TEXT_AREA, R.layout.layout_textarea);
         SUPPORTED_WIDGETS.put(TYPE_RADIO_GROUP, R.layout.layout_radiougroup);
         SUPPORTED_WIDGETS.put(TYPE_CHECK_BOX, R.layout.layout_checkbox);

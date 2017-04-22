@@ -1,6 +1,7 @@
 package presidente.oscar.formbuilder;
 
 import android.content.Context;
+import android.support.design.widget.TextInputLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +84,7 @@ public class DynamicFormView extends FrameLayout {
                 Object value = null;
                 if (viewConfig.type.compareTo(Constants.TYPE_TEXT_INPUT) == 0 ||
                         viewConfig.type.compareTo(Constants.TYPE_TEXT_AREA) == 0) {
-                    value = ((EditText) v).getText().toString();
+                    value = ((TextInputLayout) v).getEditText().getText().toString();
                 }
 
                 if (value != null) {
