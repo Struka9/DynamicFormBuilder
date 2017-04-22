@@ -115,7 +115,6 @@ public class ViewInflater {
                     textInput.setInputType(InputType.TYPE_CLASS_PHONE);
                 } else if (type.compareTo(Constants.INPUT_TYPE_DATETIME) == 0) {
                     textInput.setFocusable(false);
-
                     textInput.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
