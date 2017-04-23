@@ -3,6 +3,7 @@ package presidente.oscar.formbuilder;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -79,7 +80,6 @@ public class ViewInflater {
                 v.setTag(config);
             }
             return v;
-
         } catch (JSONException e) {
             Util.logError(TAG, e.getMessage());
             return null;
@@ -89,13 +89,19 @@ public class ViewInflater {
     private View inflateTextArea(JSONObject jsonObject, final ViewGroup parent) throws JSONException {
         TextInputLayout textInputLayout = (TextInputLayout) mLayoutInflater.inflate(R.layout.layout_textarea, parent, false);
 
-        final EditText textInput = textInputLayout.getEditText();
+        final TextInputEditText textInput = (TextInputEditText) textInputLayout.getEditText();
 
         String title = null;
         if (jsonObject.has(Constants.VIEW_PROPS)) {
             JSONObject props = jsonObject.getJSONObject(Constants.VIEW_PROPS);
+
             if (props.has(Constants.VIEW_PROPS_TITLE)) {
+
                 title = props.getString(Constants.VIEW_PROPS_TITLE);
+
+                Util.log(TAG, "title for textInput is " + title);
+
+                textInputLayout.setHint(title);
                 textInput.setHint(title);
             }
         }

@@ -40,5 +40,5 @@ public class Constants {
     public static final String INPUT_TYPE_NUMBER = "number";
     public static final String INPUT_TYPE_PHONE = "phone";
     public static final String INPUT_TYPE_DATE = "date";
-    public static final String INPUT_TYPE_DATETIME = "date";
+    public static final String INPUT_TYPE_DATETIME = "datetime";
 }

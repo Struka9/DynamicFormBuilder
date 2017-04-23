@@ -54,8 +54,9 @@ public class DynamicFormView extends FrameLayout {
                 JSONObject item = jsonArray.getJSONObject(i);
                 View inflatedView = mViewInflater.inflateFromJson(item, this);
 
-                if (inflatedView != null)
+                if (inflatedView != null) {
                     mRootLayout.addView(inflatedView);
+                }
             } catch (JSONException e) {
                 Util.logError(TAG, e.getMessage());
             }
@@ -76,6 +77,7 @@ public class DynamicFormView extends FrameLayout {
 
                 JSONObject jsonItem = new JSONObject();
 
+                // This view config includes the name and type of the inflated view
                 ViewInflater.ViewConfig viewConfig = (ViewInflater.ViewConfig) v.getTag();
 
                 jsonItem.put(Constants.VIEW_TYPE,
