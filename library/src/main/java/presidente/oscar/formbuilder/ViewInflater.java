@@ -10,9 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import org.json.JSONArray;
@@ -67,13 +68,13 @@ public class ViewInflater {
             View v = null;
             if (type.compareTo(Constants.TYPE_TEXT_INPUT) == 0) {
                 v = inflateTextArea(jsonObject, parent);
-
                 ((TextInputLayout)v).getEditText().setMaxLines(1);
-
             } else if (type.compareTo(Constants.TYPE_TEXT_AREA) == 0) {
                 v = inflateTextArea(jsonObject, parent);
             } else if (type.compareTo(Constants.TYPE_RADIO_GROUP) == 0) {
                 v = inflateRadioGroup(jsonObject, parent);
+            } else if (type.compareTo(Constants.TYPE_CHECK_BOX) == 0) {
+                v = inflateCheckbox(jsonObject, parent);
             }
 
             if (v != null) {
@@ -84,6 +85,10 @@ public class ViewInflater {
             Util.logError(TAG, e.getMessage());
             return null;
         }
+    }
+
+    private View inflateCheckbox(JSONObject jsonObject, ViewGroup parent) {
+        return null;
     }
 
     private View inflateTextArea(JSONObject jsonObject, final ViewGroup parent) throws JSONException {
@@ -189,16 +194,20 @@ public class ViewInflater {
         return textInputLayout;
     }
 
-    private RadioGroup inflateRadioGroup(JSONObject jsonObject, ViewGroup parent) throws JSONException {
-        RadioGroup radioGroup = (RadioGroup) mLayoutInflater.inflate(R.layout.layout_radiougroup, parent, false);
+    private View inflateRadioGroup(JSONObject jsonObject, ViewGroup parent) throws JSONException {
+        LinearLayout linearLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.layout_radiougroup, parent, false);
+
+        TextView titleTv = (TextView) linearLayout.getChildAt(0);
+
+        // We know the index of the radio group
+        RadioGroup radioGroup = (RadioGroup) linearLayout.getChildAt(1);
 
         if (jsonObject.has(Constants.VIEW_PROPS)) {
             JSONObject props = jsonObject.getJSONObject(Constants.VIEW_PROPS);
 
             if (props.has(Constants.VIEW_PROPS_TITLE)) {
                 String title = props.getString(Constants.VIEW_PROPS_TITLE);
-
-                // TODO: Add the title to the radio group
+                titleTv.setText(title);
             }
         }
 
@@ -209,14 +218,25 @@ public class ViewInflater {
                 JSONObject jsonOption = optionsArray.getJSONObject(i);
 
                 RadioButton option = (RadioButton) mLayoutInflater.inflate(R.layout.layout_radioubutton, radioGroup, false);
-                if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_NAME))
-                    option.setText(jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_NAME));
+
+                option.setId(i);
+
+                if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_VALUE)) {
+                    String optionName = jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_VALUE);
+                    option.setTag(optionName);
+                }
+
+                if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_TITLE)) {
+                    String title = jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_TITLE);
+                    option.setText(title);
+                }
 
                 radioGroup.addView(option);
             }
         }
 
-        return radioGroup;
+
+        return linearLayout;
     }
 
     public class ViewConfig {

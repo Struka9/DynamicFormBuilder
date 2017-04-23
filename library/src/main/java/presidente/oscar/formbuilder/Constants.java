@@ -16,7 +16,8 @@ public class Constants {
     public final static HashMap<String, Integer> SUPPORTED_WIDGETS;
     public static final String VIEW_NAME = "name";
     public static final String VIEW_RADIO_OPTIONS = "options";
-    public static final String VIEW_RADIO_OPTIONS_NAME = "value";
+    public static final String VIEW_RADIO_OPTIONS_TITLE = "title";
+    public static final String VIEW_RADIO_OPTIONS_VALUE = "value";
     public static final String VIEW_CONFIG_TEXTINPUT_TYPE = "type";
 
     static {

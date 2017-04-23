@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,6 +89,13 @@ public class DynamicFormView extends FrameLayout {
                 if (viewConfig.type.compareTo(Constants.TYPE_TEXT_INPUT) == 0 ||
                         viewConfig.type.compareTo(Constants.TYPE_TEXT_AREA) == 0) {
                     value = ((TextInputLayout) v).getEditText().getText().toString();
+                } else if (viewConfig.type.compareTo(Constants.TYPE_RADIO_GROUP) == 0) {
+                    // If it is a radiogroup we only care for the selected radio button
+                    // The root layout is a LinearLayout
+                    RadioGroup radioGroup = (RadioGroup) ((LinearLayout)v).getChildAt(1);
+                    RadioButton selectedRadio = (RadioButton) radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+                    // The value will be the name of the selected option
+                    value = selectedRadio.getTag();
                 }
 
                 if (value != null) {
