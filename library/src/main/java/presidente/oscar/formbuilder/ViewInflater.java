@@ -102,7 +102,6 @@ public class ViewInflater {
                 Util.log(TAG, "title for textInput is " + title);
 
                 textInputLayout.setHint(title);
-                textInput.setHint(title);
             }
         }
 
