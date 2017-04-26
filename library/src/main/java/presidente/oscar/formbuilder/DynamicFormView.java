@@ -5,7 +5,7 @@ import android.support.design.widget.TextInputLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -89,6 +89,11 @@ public class DynamicFormView extends FrameLayout {
                 if (viewConfig.type.compareTo(Constants.TYPE_TEXT_INPUT) == 0 ||
                         viewConfig.type.compareTo(Constants.TYPE_TEXT_AREA) == 0) {
                     value = ((TextInputLayout) v).getEditText().getText().toString();
+
+                    if (value != null) {
+                        jsonItem.put(Constants.JSON_VALUE, value);
+                    }
+
                 } else if (viewConfig.type.compareTo(Constants.TYPE_RADIO_GROUP) == 0) {
                     // If it is a radiogroup we only care for the selected radio button
                     // The root layout is a LinearLayout
@@ -96,10 +101,30 @@ public class DynamicFormView extends FrameLayout {
                     RadioButton selectedRadio = (RadioButton) radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
                     // The value will be the name of the selected option
                     value = selectedRadio.getTag();
-                }
 
-                if (value != null) {
-                    jsonItem.put(Constants.JSON_VALUE, value);
+                    if (value != null) {
+                        jsonItem.put(Constants.JSON_VALUE, value);
+                    }
+
+                } else if (viewConfig.type.compareTo(Constants.TYPE_CHECK_BOX) == 0) {
+
+                    JSONArray checkedItems = new JSONArray();
+
+                    LinearLayout asLinearLayout = (LinearLayout)v;
+
+                    // We start at '1' since '0' is occupied by the title view
+                    for (int j = 1; j < asLinearLayout.getChildCount(); j++) {
+                        CheckBox checkBox = (CheckBox) asLinearLayout.getChildAt(j);
+
+                        String checkboxName = (String) checkBox.getTag();
+
+                        if (checkBox.isChecked()) {
+                            checkedItems.put(checkboxName);
+                        }
+
+                    }
+
+                    jsonItem.put(Constants.JSON_CHECKED, checkedItems);
                 }
 
                 rootObject.put(viewConfig.name, jsonItem);

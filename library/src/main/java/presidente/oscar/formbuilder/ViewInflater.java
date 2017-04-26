@@ -9,6 +9,7 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -84,12 +85,9 @@ public class ViewInflater {
     }
 
     private View inflateCheckbox(JSONObject jsonObject, ViewGroup parent) throws JSONException {
-        LinearLayout linearLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.layout_checkbox, parent, false);
+        LinearLayout linearLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.layout_checkbox_group, parent, false);
 
         TextView titleTv = (TextView) linearLayout.getChildAt(0);
-
-        // We know the index of the radio group
-        RadioGroup radioGroup = (RadioGroup) linearLayout.getChildAt(1);
 
         if (jsonObject.has(Constants.VIEW_PROPS)) {
             JSONObject props = jsonObject.getJSONObject(Constants.VIEW_PROPS);
@@ -106,13 +104,13 @@ public class ViewInflater {
             for (int i = 0; i < optionsArray.length(); i++) {
                 JSONObject jsonOption = optionsArray.getJSONObject(i);
 
-                RadioButton option = (RadioButton) mLayoutInflater.inflate(R.layout.layout_radioubutton, radioGroup, false);
+                CheckBox option = (CheckBox) mLayoutInflater.inflate(R.layout.layout_checkbox, linearLayout, false);
 
                 option.setId(i);
 
                 if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_VALUE)) {
-                    String optionId = jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_VALUE);
-                    option.setTag(optionId);
+                    String optionName = jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_VALUE);
+                    option.setTag(optionName);
                 }
 
                 if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_TITLE)) {
@@ -120,7 +118,7 @@ public class ViewInflater {
                     option.setText(title);
                 }
 
-                radioGroup.addView(option);
+                linearLayout.addView(option);
             }
         }
 
