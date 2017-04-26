@@ -19,7 +19,7 @@ public class Constants {
     public static final String VIEW_RADIO_OPTIONS_TITLE = "title";
     public static final String VIEW_RADIO_OPTIONS_VALUE = "value";
     public static final String VIEW_CONFIG_TEXTINPUT_TYPE = "type";
-    public static final String JSON_CHECKED = "checked";
+    public static final String JSON_ITEMS = "items";
 
     static {
         SUPPORTED_WIDGETS = new HashMap<>();

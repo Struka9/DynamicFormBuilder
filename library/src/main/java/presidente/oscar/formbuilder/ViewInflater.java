@@ -57,9 +57,6 @@ public class ViewInflater {
             }
 
             String type = jsonObject.getString(Constants.VIEW_TYPE);
-            String name = jsonObject.getString(Constants.VIEW_NAME);
-
-            ViewConfig config = new ViewConfig(name, type);
 
             View v = null;
             if (type.compareTo(Constants.TYPE_TEXT_INPUT) == 0) {
@@ -74,7 +71,7 @@ public class ViewInflater {
             }
 
             if (v != null) {
-                v.setTag(config);
+                v.setTag(jsonObject);
             }
 
             return v;
@@ -110,12 +107,9 @@ public class ViewInflater {
 
                 if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_VALUE)) {
                     String optionName = jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_VALUE);
+                    // TODO: We can omit the tag and use the only the text
                     option.setTag(optionName);
-                }
-
-                if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_TITLE)) {
-                    String title = jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_TITLE);
-                    option.setText(title);
+                    option.setText(optionName);
                 }
 
                 linearLayout.addView(option);
@@ -266,11 +260,7 @@ public class ViewInflater {
                 if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_VALUE)) {
                     String optionId = jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_VALUE);
                     option.setTag(optionId);
-                }
-
-                if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_TITLE)) {
-                    String title = jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_TITLE);
-                    option.setText(title);
+                    option.setText(optionId);
                 }
 
                 radioGroup.addView(option);
@@ -279,15 +269,5 @@ public class ViewInflater {
 
 
         return linearLayout;
-    }
-
-    public class ViewConfig {
-        public String type;
-        public String name;
-
-        public ViewConfig(String name, String type) {
-            this.name = name;
-            this.type = type;
-        }
     }
 }

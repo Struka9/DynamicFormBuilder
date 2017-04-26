@@ -70,31 +70,30 @@ public class DynamicFormView extends FrameLayout {
      *
      * @return
      */
-    public JSONObject buildJson() {
+    public JSONObject buildJson() throws JSONException {
         JSONObject rootObject = new JSONObject();
 
+        JSONArray viewsArray = new JSONArray();
         for (int i = 0; i < this.getChildCount(); i++) {
             try {
                 View v = this.getChildAt(i);
 
-                JSONObject jsonItem = new JSONObject();
-
                 // This view config includes the name and type of the inflated view
-                ViewInflater.ViewConfig viewConfig = (ViewInflater.ViewConfig) v.getTag();
+                JSONObject viewConfig = (JSONObject) v.getTag();
 
-                jsonItem.put(Constants.VIEW_TYPE,
-                        viewConfig.type);
+                // We know that for this view to exist 'type' and 'name' props had to be present
+                String type = viewConfig.getString(Constants.VIEW_TYPE);
 
                 Object value = null;
-                if (viewConfig.type.compareTo(Constants.TYPE_TEXT_INPUT) == 0 ||
-                        viewConfig.type.compareTo(Constants.TYPE_TEXT_AREA) == 0) {
+                if (type.compareTo(Constants.TYPE_TEXT_INPUT) == 0 ||
+                        type.compareTo(Constants.TYPE_TEXT_AREA) == 0) {
                     value = ((TextInputLayout) v).getEditText().getText().toString();
 
                     if (value != null) {
-                        jsonItem.put(Constants.JSON_VALUE, value);
+                        viewConfig.put(Constants.JSON_VALUE, value);
                     }
 
-                } else if (viewConfig.type.compareTo(Constants.TYPE_RADIO_GROUP) == 0) {
+                } else if (type.compareTo(Constants.TYPE_RADIO_GROUP) == 0) {
                     // If it is a radiogroup we only care for the selected radio button
                     // The root layout is a LinearLayout
                     RadioGroup radioGroup = (RadioGroup) ((LinearLayout)v).getChildAt(1);
@@ -103,10 +102,10 @@ public class DynamicFormView extends FrameLayout {
                     value = selectedRadio.getTag();
 
                     if (value != null) {
-                        jsonItem.put(Constants.JSON_VALUE, value);
+                        viewConfig.put(Constants.JSON_VALUE, value);
                     }
 
-                } else if (viewConfig.type.compareTo(Constants.TYPE_CHECK_BOX) == 0) {
+                } else if (type.compareTo(Constants.TYPE_CHECK_BOX) == 0) {
 
                     JSONArray checkedItems = new JSONArray();
 
@@ -124,15 +123,16 @@ public class DynamicFormView extends FrameLayout {
 
                     }
 
-                    jsonItem.put(Constants.JSON_CHECKED, checkedItems);
+                    viewConfig.put(Constants.JSON_VALUE, checkedItems);
                 }
 
-                rootObject.put(viewConfig.name, jsonItem);
+                viewsArray.put(viewConfig);
             } catch (JSONException e) {
                 Util.logError(TAG, e.getMessage());
             }
         }
 
+        rootObject.put(Constants.JSON_ITEMS, viewsArray);
         return rootObject;
     }
 }
