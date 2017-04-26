@@ -95,6 +95,9 @@ public class ViewInflater {
             }
         }
 
+        // In case the definition contains checked items
+        JSONArray checkedItems = jsonObject.getJSONArray(Constants.JSON_VALUE);
+
         if (jsonObject.has(Constants.VIEW_RADIO_OPTIONS)) {
             JSONArray optionsArray = jsonObject.getJSONArray(Constants.VIEW_RADIO_OPTIONS);
 
@@ -105,11 +108,23 @@ public class ViewInflater {
 
                 option.setId(i);
 
+                String optionName = null;
                 if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_VALUE)) {
-                    String optionName = jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_VALUE);
+                    optionName = jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_VALUE);
                     // TODO: We can omit the tag and use the only the text
                     option.setTag(optionName);
                     option.setText(optionName);
+                }
+
+                // Iterate through the checked items and see if we should check this option
+
+                if (checkedItems != null) {
+                    for (int j = 0; j < checkedItems.length(); j++) {
+                        String checkedItem = checkedItems.getString(j);
+                        if (checkedItem.compareTo(optionName) == 0) {
+                            option.setChecked(true);
+                        }
+                    }
                 }
 
                 linearLayout.addView(option);
@@ -138,6 +153,10 @@ public class ViewInflater {
                 textInputLayout.setHint(title);
             }
         }
+
+        // Check the edit text doesn't have an aswer already
+        String value = jsonObject.getString(Constants.JSON_VALUE);
+        textInput.setText(value);
 
         // If it's text are we don't set date or date time listeners
         if (type.compareTo(Constants.TYPE_TEXT_INPUT) == 0) {
@@ -247,6 +266,8 @@ public class ViewInflater {
             }
         }
 
+        String checkedItem = jsonObject.getString(Constants.JSON_VALUE);
+
         if (jsonObject.has(Constants.VIEW_RADIO_OPTIONS)) {
             JSONArray optionsArray = jsonObject.getJSONArray(Constants.VIEW_RADIO_OPTIONS);
 
@@ -257,16 +278,20 @@ public class ViewInflater {
 
                 option.setId(i);
 
+                String optionId = null;
                 if (jsonOption.has(Constants.VIEW_RADIO_OPTIONS_VALUE)) {
-                    String optionId = jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_VALUE);
+                    optionId = jsonOption.getString(Constants.VIEW_RADIO_OPTIONS_VALUE);
                     option.setTag(optionId);
                     option.setText(optionId);
                 }
 
                 radioGroup.addView(option);
+
+                if (optionId != null && checkedItem != null && optionId.compareTo(checkedItem) == 0) {
+                    option.setChecked(true);
+                }
             }
         }
-
 
         return linearLayout;
     }
