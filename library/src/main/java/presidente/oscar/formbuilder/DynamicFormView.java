@@ -66,8 +66,7 @@ public class DynamicFormView extends FrameLayout {
      *
      * @return
      */
-    public JSONObject buildJson() throws JSONException {
-        JSONObject rootObject = new JSONObject();
+    public JSONArray buildJson() throws JSONException {
 
         JSONArray viewsArray = new JSONArray();
         for (int i = 0; i < mContentLayout.getChildCount(); i++) {
@@ -128,7 +127,6 @@ public class DynamicFormView extends FrameLayout {
             }
         }
 
-        rootObject.put(Constants.JSON_ITEMS, viewsArray);
-        return rootObject;
+        return viewsArray;
     }
 }
