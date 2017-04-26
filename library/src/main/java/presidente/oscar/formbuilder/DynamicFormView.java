@@ -25,8 +25,6 @@ public class DynamicFormView extends FrameLayout {
     private LinearLayout mContentLayout;
     private ViewInflater mViewInflater;
 
-    private LinearLayout mRootLayout;
-
     public DynamicFormView(Context context) {
         this(context, null);
     }
@@ -41,10 +39,10 @@ public class DynamicFormView extends FrameLayout {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
         // Inflate the root view and add it to this
-        mRootLayout = (LinearLayout) layoutInflater.inflate(R.layout.layout_dynamic_form, this, true);
+        layoutInflater.inflate(R.layout.layout_dynamic_form, this, true);
 
         // Get the reference to the content view and submission button
-        mContentLayout = (LinearLayout) mRootLayout.findViewById(R.id.content);
+        mContentLayout = (LinearLayout) this.findViewById(R.id.content);
         mViewInflater = ViewInflater.getInstance(context);
     }
 
