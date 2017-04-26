@@ -52,7 +52,7 @@ public class ViewInflater {
     public View inflateFromJson(JSONObject jsonObject, ViewGroup parent) {
         try {
             // name and type are required
-            if (!jsonObject.has(Constants.VIEW_TYPE) || !jsonObject.has(Constants.VIEW_NAME)) {
+            if (!jsonObject.has(Constants.VIEW_TYPE)) {
                 return null;
             }
 
@@ -96,7 +96,10 @@ public class ViewInflater {
         }
 
         // In case the definition contains checked items
-        JSONArray checkedItems = jsonObject.getJSONArray(Constants.JSON_VALUE);
+        JSONArray checkedItems = null;
+        if (jsonObject.has(Constants.JSON_VALUE)) {
+            checkedItems = jsonObject.getJSONArray(Constants.JSON_VALUE);
+        }
 
         if (jsonObject.has(Constants.VIEW_RADIO_OPTIONS)) {
             JSONArray optionsArray = jsonObject.getJSONArray(Constants.VIEW_RADIO_OPTIONS);
@@ -155,8 +158,11 @@ public class ViewInflater {
         }
 
         // Check the edit text doesn't have an aswer already
-        String value = jsonObject.getString(Constants.JSON_VALUE);
-        textInput.setText(value);
+        String value = null;
+        if (jsonObject.has(Constants.JSON_VALUE)) {
+            value = jsonObject.getString(Constants.JSON_VALUE);
+            textInput.setText(value);
+        }
 
         // If it's text are we don't set date or date time listeners
         if (type.compareTo(Constants.TYPE_TEXT_INPUT) == 0) {
@@ -266,7 +272,10 @@ public class ViewInflater {
             }
         }
 
-        String checkedItem = jsonObject.getString(Constants.JSON_VALUE);
+        String checkedItem = null;
+        if (jsonObject.has(Constants.JSON_VALUE)) {
+            checkedItem = jsonObject.getString(Constants.JSON_VALUE);
+        }
 
         if (jsonObject.has(Constants.VIEW_RADIO_OPTIONS)) {
             JSONArray optionsArray = jsonObject.getJSONArray(Constants.VIEW_RADIO_OPTIONS);
