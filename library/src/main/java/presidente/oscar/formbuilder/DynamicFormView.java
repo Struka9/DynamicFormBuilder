@@ -41,12 +41,10 @@ public class DynamicFormView extends FrameLayout {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
         // Inflate the root view and add it to this
-        View root = layoutInflater.inflate(R.layout.layout_dynamic_form, this, true);
-
-        mRootLayout = (LinearLayout) findViewById(R.id.content);
+        mRootLayout = (LinearLayout) layoutInflater.inflate(R.layout.layout_dynamic_form, this, true);
 
         // Get the reference to the content view and submission button
-        mContentLayout = (LinearLayout) root.findViewById(R.id.content);
+        mContentLayout = (LinearLayout) mRootLayout.findViewById(R.id.content);
         mViewInflater = ViewInflater.getInstance(context);
     }
 
@@ -57,7 +55,7 @@ public class DynamicFormView extends FrameLayout {
                 View inflatedView = mViewInflater.inflateFromJson(item, this);
 
                 if (inflatedView != null) {
-                    mRootLayout.addView(inflatedView);
+                    mContentLayout.addView(inflatedView);
                 }
             } catch (JSONException e) {
                 Util.logError(TAG, e.getMessage());
@@ -74,9 +72,9 @@ public class DynamicFormView extends FrameLayout {
         JSONObject rootObject = new JSONObject();
 
         JSONArray viewsArray = new JSONArray();
-        for (int i = 0; i < this.getChildCount(); i++) {
+        for (int i = 0; i < mContentLayout.getChildCount(); i++) {
             try {
-                View v = this.getChildAt(i);
+                View v = mContentLayout.getChildAt(i);
 
                 // This view config includes the name and type of the inflated view
                 JSONObject viewConfig = (JSONObject) v.getTag();
