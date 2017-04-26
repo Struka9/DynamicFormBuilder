@@ -52,7 +52,7 @@ public class ViewInflater {
     public View inflateFromJson(JSONObject jsonObject, ViewGroup parent) {
         try {
             // name and type are required
-            if (!jsonObject.has(Constants.VIEW_TYPE) || !jsonObject.has(Constants.VIEW_NAME)) {
+            if (!jsonObject.has(Constants.VIEW_TYPE)) {
                 return null;
             }
 
