@@ -47,14 +47,20 @@ public class DynamicFormView extends FrameLayout {
     }
 
     public void createView(JSONArray jsonArray) {
+        createView(jsonArray, true);
+    }
+
+    public void createView(JSONArray jsonArray, boolean allowInput) {
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject item = jsonArray.getJSONObject(i);
                 View inflatedView = mViewInflater.inflateFromJson(item, this);
 
                 if (inflatedView != null) {
+                    inflatedView.setEnabled(allowInput);
                     mContentLayout.addView(inflatedView);
                 }
+
             } catch (JSONException e) {
                 Util.logError(TAG, e.getMessage());
             }

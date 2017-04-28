@@ -1,9 +1,10 @@
 package presidente.oscar.formbuilder;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import android.util.Log;
 
 /**
  * Created by oscarr on 4/7/17.
