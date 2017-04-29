@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Constants {
     public static final String TYPE_TEXT_INPUT = "input";
     public static final String TYPE_TEXT_AREA = "textarea";
-    public static final String TYPE_RADIO_GROUP = "multipleChoices";
+    public static final String TYPE_RADIO_GROUP = "radioGroup";
     public static final String TYPE_CHECK_BOX = "checkboxes";
     public static final String TYPE_MATRIX = "matrix";
 
