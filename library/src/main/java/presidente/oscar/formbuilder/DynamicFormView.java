@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +25,7 @@ public class DynamicFormView extends FrameLayout {
 
     private LinearLayout mContentLayout;
     private ViewInflater mViewInflater;
+    private TextView mTitleTv;
 
     public DynamicFormView(Context context) {
         this(context, null);
@@ -42,6 +44,7 @@ public class DynamicFormView extends FrameLayout {
         layoutInflater.inflate(R.layout.layout_dynamic_form, this, true);
 
         // Get the reference to the content view and submission button
+        mTitleTv = (TextView) this.findViewById(R.id.title);
         mContentLayout = (LinearLayout) this.findViewById(R.id.content);
         mViewInflater = ViewInflater.getInstance(context);
     }
@@ -65,6 +68,10 @@ public class DynamicFormView extends FrameLayout {
                 Util.logError(TAG, e.getMessage());
             }
         }
+    }
+
+    public void setTitle(String text) {
+        mTitleTv.setText(text);
     }
 
     /**
