@@ -86,7 +86,6 @@ public class DynamicFormView extends FrameLayout {
             try {
                 View v = mContentLayout.getChildAt(i);
 
-                // This view config includes the name and type of the inflated view
                 JSONObject viewConfig = (JSONObject) v.getTag();
 
                 // We know that for this view to exist 'type' and 'name' props had to be present
@@ -115,23 +114,24 @@ public class DynamicFormView extends FrameLayout {
 
                 } else if (type.compareTo(Constants.TYPE_CHECK_BOX) == 0) {
 
-                    JSONArray checkedItems = new JSONArray();
-
                     LinearLayout asLinearLayout = (LinearLayout)v;
+
+                    JSONArray optionsArray = new JSONArray();
 
                     // We start at '1' since '0' is occupied by the title view
                     for (int j = 1; j < asLinearLayout.getChildCount(); j++) {
                         CheckBox checkBox = (CheckBox) asLinearLayout.getChildAt(j);
-
                         String checkboxName = (String) checkBox.getTag();
 
-                        if (checkBox.isChecked()) {
-                            checkedItems.put(checkboxName);
-                        }
+                        JSONObject checkboxAsJson = new JSONObject();
+                        checkboxAsJson.put("value", checkboxName);
 
+                        checkboxAsJson.put("selected", checkBox.isSelected());
+
+                        optionsArray.put(checkboxAsJson);
                     }
 
-                    viewConfig.put(Constants.JSON_VALUE, checkedItems);
+                    viewConfig.put("options", optionsArray);
                 }
 
                 viewsArray.put(viewConfig);
