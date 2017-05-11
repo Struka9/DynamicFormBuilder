@@ -105,11 +105,14 @@ public class DynamicFormView extends FrameLayout {
                     // The root layout is a LinearLayout
                     RadioGroup radioGroup = (RadioGroup) ((LinearLayout)v).getChildAt(1);
                     RadioButton selectedRadio = (RadioButton) radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
-                    // The value will be the name of the selected option
-                    value = selectedRadio.getTag();
 
-                    if (value != null) {
-                        viewConfig.put(Constants.JSON_VALUE, value);
+                    if (selectedRadio != null) {
+                        // The value will be the name of the selected option
+                        value = selectedRadio.getTag();
+
+                        if (value != null) {
+                            viewConfig.put(Constants.JSON_VALUE, value);
+                        }
                     }
 
                 } else if (type.compareTo(Constants.TYPE_CHECK_BOX) == 0) {
