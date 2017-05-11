@@ -96,10 +96,19 @@ public class DynamicFormView extends LinearLayout {
                 Object value = null;
                 if (type.compareTo(Constants.TYPE_TEXT_INPUT) == 0 ||
                         type.compareTo(Constants.TYPE_TEXT_AREA) == 0) {
-                    value = ((TextInputLayout) v).getEditText().getText().toString();
+                    String textAsString = ((TextInputLayout) v).getEditText().getText().toString();
 
-                    if (value != null) {
-                        viewConfig.put(Constants.JSON_VALUE, value);
+                    // Get the config
+                    if (viewConfig.has(Constants.VIEW_CONFIG)) {
+                        JSONObject config = viewConfig.getJSONObject(Constants.VIEW_CONFIG);
+
+                        if (config.has(Constants.VIEW_CONFIG_TEXTINPUT_TYPE) &&
+                                config.getString(Constants.VIEW_CONFIG_TEXTINPUT_TYPE).compareTo(Constants.INPUT_TYPE_NUMBER) == 0) {
+
+                            viewConfig.put(Constants.JSON_VALUE, Double.valueOf(textAsString));
+                        } else {
+                            viewConfig.put(Constants.JSON_VALUE, textAsString);
+                        }
                     }
 
                 } else if (type.compareTo(Constants.TYPE_RADIO_GROUP) == 0) {
