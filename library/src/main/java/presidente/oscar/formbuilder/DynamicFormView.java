@@ -103,7 +103,8 @@ public class DynamicFormView extends LinearLayout {
                         JSONObject config = viewConfig.getJSONObject(Constants.VIEW_CONFIG);
 
                         if (config.has(Constants.VIEW_CONFIG_TEXTINPUT_TYPE) &&
-                                config.getString(Constants.VIEW_CONFIG_TEXTINPUT_TYPE).compareTo(Constants.INPUT_TYPE_NUMBER) == 0) {
+                                config.getString(Constants.VIEW_CONFIG_TEXTINPUT_TYPE).compareTo(Constants.INPUT_TYPE_NUMBER) == 0 &&
+                                !textAsString.isEmpty()) {
 
                             viewConfig.put(Constants.JSON_VALUE, Double.valueOf(textAsString));
                         } else {
