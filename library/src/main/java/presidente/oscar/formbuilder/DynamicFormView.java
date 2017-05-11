@@ -20,7 +20,7 @@ import org.json.JSONObject;
  * Created by oscarr on 4/7/17.
  */
 
-public class DynamicFormView extends FrameLayout {
+public class DynamicFormView extends LinearLayout {
     private static final String TAG = DynamicFormView.class.getSimpleName();
 
     private LinearLayout mContentLayout;
@@ -38,6 +38,8 @@ public class DynamicFormView extends FrameLayout {
 
 
     private void init(Context context) {
+        this.setOrientation(LinearLayout.VERTICAL);
+
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
         // Inflate the root view and add it to this
