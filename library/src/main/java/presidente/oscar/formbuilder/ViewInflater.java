@@ -68,6 +68,8 @@ public class ViewInflater {
                 v = inflateRadioGroup(jsonObject, parent);
             } else if (type.compareTo(Constants.TYPE_CHECK_BOX) == 0) {
                 v = inflateCheckbox(jsonObject, parent);
+            } else if (type.compareTo(Constants.TYPE_LABEL) == 0) {
+                v = inflateLabel(jsonObject, parent);
             }
 
             if (v != null) {
@@ -136,6 +138,21 @@ public class ViewInflater {
 
 
         return linearLayout;
+    }
+
+    private View inflateLabel(JSONObject jsonObject, final ViewGroup parent) throws JSONException {
+        TextView textView = (TextView) mLayoutInflater.inflate(R.layout.layout_label, parent, false);
+
+        if (jsonObject.has(Constants.VIEW_PROPS)) {
+            JSONObject propsJson = jsonObject.getJSONObject(Constants.VIEW_PROPS);
+
+            if (propsJson.has(Constants.VIEW_PROPS_TITLE)) {
+                Object title = propsJson.get(Constants.VIEW_PROPS_TITLE);
+                textView.setText(String.valueOf(title));
+            }
+        }
+
+        return textView;
     }
 
     private View inflateTextInput(JSONObject jsonObject, final ViewGroup parent) throws JSONException {

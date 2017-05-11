@@ -11,6 +11,7 @@ public class Constants {
     public static final String TYPE_TEXT_AREA = "textarea";
     public static final String TYPE_RADIO_GROUP = "radioGroup";
     public static final String TYPE_CHECK_BOX = "checkboxes";
+    public static final String TYPE_LABEL = "label";
     public static final String TYPE_MATRIX = "matrix";
 
     public final static HashMap<String, Integer> SUPPORTED_WIDGETS;
