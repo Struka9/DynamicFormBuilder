@@ -141,7 +141,7 @@ public class DynamicFormView extends LinearLayout {
                         JSONObject checkboxAsJson = new JSONObject();
                         checkboxAsJson.put("value", checkboxName);
 
-                        checkboxAsJson.put("selected", checkBox.isSelected());
+                        checkboxAsJson.put("selected", checkBox.isChecked());
 
                         optionsArray.put(checkboxAsJson);
                     }
