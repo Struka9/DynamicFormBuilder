@@ -27,7 +27,6 @@ public class Constants {
         SUPPORTED_WIDGETS.put(TYPE_TEXT_AREA, R.layout.layout_textarea);
         SUPPORTED_WIDGETS.put(TYPE_RADIO_GROUP, R.layout.layout_radiougroup);
         SUPPORTED_WIDGETS.put(TYPE_CHECK_BOX, R.layout.layout_checkbox);
-//        SUPPORTED_WIDGETS.put(TYPE_MATRIX,)
     }
 
     public static final String VIEW_TYPE = "type";
@@ -36,6 +35,7 @@ public class Constants {
 
     public static final String VIEW_PROPS = "props";
     public static final String VIEW_PROPS_TITLE = "title";
+
     // The keys to use in the JSON sent back to the server
     public static final String JSON_VALUE = "value";
 
